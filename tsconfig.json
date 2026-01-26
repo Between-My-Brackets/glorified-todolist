@@ -20,10 +20,9 @@
     // Output and Project Structure
     "rootDir": "./src",
     "outDir": "./dist",
-    "noEmit": true, // Often used with Vite/esbuild
+     // Often used with Vite/esbuild
     
     // Modernization Options
-    "allowImportingTsExtensions": true,
     "forceConsistentCasingInFileNames": true
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"],
