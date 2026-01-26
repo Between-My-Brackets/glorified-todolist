@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 
 //let tasks: any[] = [];
-import { Task } from "../models/task.model";
+import { Task } from "../models/task.model.js";
 
 export const createTask = (req: Request, res: Response, next: NextFunction) => {
     try{

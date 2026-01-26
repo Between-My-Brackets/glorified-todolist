@@ -1,6 +1,12 @@
-import mongoose from "mongoose";
+import mongoose, {Schema, Document} from "mongoose";
 
-const taskSchema = new mongoose.Schema(
+export interface TaskDocument extends Document {
+    title: string;
+    description?: string;
+    status: "todo"|"doing"|"done";
+}
+
+const taskSchema = new Schema<TaskDocument>(
     {
         title: {
             type: String,
@@ -20,4 +26,4 @@ const taskSchema = new mongoose.Schema(
     },
 );
 
-export const Task = mongoose.model("Task", taskSchema);
+export const Task = mongoose.model<TaskDocument>("Task", taskSchema);
