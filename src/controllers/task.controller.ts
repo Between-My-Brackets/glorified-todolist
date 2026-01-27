@@ -1,9 +1,10 @@
 import type { Request, Response, NextFunction } from "express";
 
+
 //let tasks: any[] = [];
 import { Task } from "../models/task.model.js";
 
-export const createTask = (req: Request, res: Response, next: NextFunction) => {
+export const createTask = async(req: Request, res: Response, next: NextFunction) => {
     try{
         const task ={
             id: Date.now().toString(),
@@ -12,7 +13,7 @@ export const createTask = (req: Request, res: Response, next: NextFunction) => {
             status: "todo",
             createdAt: new Date()
         };
-        Task.create(task);
+        const createdRecord = await Task.create(task);
         res.status(201).json(task);
     }
     catch(err){
@@ -22,8 +23,36 @@ export const createTask = (req: Request, res: Response, next: NextFunction) => {
 
 
 export const getTasks = async (req: Request, res: Response) => {
-    const tasks = await Task.find();
-    res.json(tasks);
+    const {
+        status,
+        page = '1',
+        limit = "10",
+        sort = "createdAt",
+    } = req.query;
+
+    const filter: any = {};
+    if(status){
+        filter.status = status;
+    }
+
+    const pageNumber = Math.max(Number(page), 1);
+    const limitNumber = Math.max(Number(limit), 1);
+    const skip = (pageNumber -1) * limitNumber;
+
+    const tasks = await Task.find(filter)
+        .sort({[sort as string]: -1})
+        .skip(skip)
+        .limit(limitNumber)
+
+    const total = await Task.countDocuments(filter);
+
+    res.json({
+        page: pageNumber,
+        limit: limitNumber,
+        total,
+        results: tasks.length,
+        data: tasks
+    });
 }
 
 

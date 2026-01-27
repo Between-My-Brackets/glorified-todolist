@@ -6,6 +6,7 @@
   "scripts": {
     "test": "jest",
     "dev": "npx tsc && node dist/server.js",
+    "seed": "node --loader ts-node/esm src/seed.ts",
     "build": "npx tsc"
   },
   "keywords": [],
@@ -14,7 +15,8 @@
   "type": "module",
   "dependencies": {
     "express": "^5.2.1",
-    "mongoose": "^9.1.5"
+    "mongoose": "^9.1.5",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
