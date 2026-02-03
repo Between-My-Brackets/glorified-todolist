@@ -1,0 +1,195 @@
+{
+  "base_url": "http://localhost:3000",
+  "endpoints": [
+    {
+      "path": "/tasks",
+      "method": "POST",
+      "operation_id": null,
+      "auth": "none",
+      "request": {
+        "content_type": "application/json",
+        "schema": {
+          "_id": {
+            "type": "string",
+            "description": "The auto-generated id of the task"
+          },
+          "title": {
+            "type": "string",
+            "description": "The title of your task"
+          },
+          "description": {
+            "type": "string",
+            "description": "The description of the task"
+          },
+          "status": {
+            "type": "string",
+            "description": "The status of the task",
+            "enum": [
+              "todo",
+              "doing",
+              "done"
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date the task was added"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date the task was last updated"
+          }
+        },
+        "required": []
+      },
+      "responses": {
+        "201": {
+          "description": "The task was successfully created",
+          "content_type": "application/json"
+        },
+        "500": {
+          "description": "Some server error",
+          "content_type": ""
+        }
+      }
+    },
+    {
+      "path": "/tasks",
+      "method": "GET",
+      "operation_id": null,
+      "auth": "none",
+      "request": {
+        "content_type": "",
+        "schema": {},
+        "required": []
+      },
+      "responses": {
+        "200": {
+          "description": "The list of the tasks",
+          "content_type": "application/json"
+        }
+      }
+    },
+    {
+      "path": "/tasks/stats",
+      "method": "GET",
+      "operation_id": null,
+      "auth": "none",
+      "request": {
+        "content_type": "",
+        "schema": {},
+        "required": []
+      },
+      "responses": {
+        "200": {
+          "description": "Task statistics",
+          "content_type": "application/json"
+        },
+        "500": {
+          "description": "Some server error",
+          "content_type": ""
+        }
+      }
+    },
+    {
+      "path": "/tasks/{id}",
+      "method": "GET",
+      "operation_id": null,
+      "auth": "none",
+      "request": {
+        "content_type": "",
+        "schema": {},
+        "required": []
+      },
+      "responses": {
+        "200": {
+          "description": "The task description by id",
+          "content_type": "application/json"
+        },
+        "404": {
+          "description": "The task was not found",
+          "content_type": ""
+        }
+      }
+    },
+    {
+      "path": "/tasks/{id}",
+      "method": "PATCH",
+      "operation_id": null,
+      "auth": "none",
+      "request": {
+        "content_type": "application/json",
+        "schema": {
+          "_id": {
+            "type": "string",
+            "description": "The auto-generated id of the task"
+          },
+          "title": {
+            "type": "string",
+            "description": "The title of your task"
+          },
+          "description": {
+            "type": "string",
+            "description": "The description of the task"
+          },
+          "status": {
+            "type": "string",
+            "description": "The status of the task",
+            "enum": [
+              "todo",
+              "doing",
+              "done"
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date the task was added"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date the task was last updated"
+          }
+        },
+        "required": []
+      },
+      "responses": {
+        "200": {
+          "description": "The task was updated",
+          "content_type": "application/json"
+        },
+        "404": {
+          "description": "The task was not found",
+          "content_type": ""
+        },
+        "500": {
+          "description": "Some error happened",
+          "content_type": ""
+        }
+      }
+    },
+    {
+      "path": "/tasks/{id}",
+      "method": "DELETE",
+      "operation_id": null,
+      "auth": "none",
+      "request": {
+        "content_type": "",
+        "schema": {},
+        "required": []
+      },
+      "responses": {
+        "200": {
+          "description": "The task was deleted",
+          "content_type": ""
+        },
+        "404": {
+          "description": "The task was not found",
+          "content_type": ""
+        }
+      }
+    }
+  ]
+}

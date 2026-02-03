@@ -6,6 +6,6 @@ docker volume create mongo-data > /dev/null
 # Run the mongodb container with the volume mounted
 sudo docker run -d \
   -p 27017:27017 \
-  --name mongodb-container \
+  --name mongodb-container-todo \
   -v mongo-data:/data/db \
   mongo

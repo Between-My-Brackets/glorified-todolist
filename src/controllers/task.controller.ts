@@ -109,3 +109,25 @@ export const deleteTask = async (req: Request, res: Response, next: NextFunction
         next(err);
     }
 };
+
+export const getTaskStats = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const stats = await Task.aggregate([
+            {
+                $group: {
+                    _id: "$status",
+                    count: { $sum: 1 },
+                },
+            },
+        ]);
+
+        const taskStats = stats.reduce((acc: any, stat: any) => {
+            acc[stat._id] = stat.count;
+            return acc;
+        }, {});
+
+        res.json(taskStats);
+    } catch (err) {
+        next(err);
+    }
+};

@@ -23,6 +23,21 @@ const seedTasks = [
         description: "Deploy the new version to the production server.",
         status: "done",
     },
+    {
+        title: "Design the new landing page",
+        description: "Create a mockup and wireframe for the new landing page.",
+        status: "todo",
+    },
+    {
+        title: "Implement JWT authentication",
+        description: "Add JWT-based authentication to the API.",
+        status: "doing",
+    },
+    {
+        title: "Write unit tests for the task controller",
+        description: "Ensure all endpoints in the task controller are covered by unit tests.",
+        status: "done",
+    },
 ];
 
 const seedDB = async () => {

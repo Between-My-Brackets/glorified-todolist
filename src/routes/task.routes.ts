@@ -4,7 +4,8 @@ import {
     getTasks,
     getTaskById,
     updateTask,
-    deleteTask
+    deleteTask,
+    getTaskStats
 } from "../controllers/task.controller.js";
 import { validate } from "../middleware/validate.middleware.js";
 import {
@@ -14,10 +15,230 @@ import {
 
 const router = Router();
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Task:
+ *       type: object
+ *       required:
+ *         - title
+ *       properties:
+ *         _id:
+ *           type: string
+ *           description: The auto-generated id of the task
+ *         title:
+ *           type: string
+ *           description: The title of your task
+ *         description:
+ *           type: string
+ *           description: The description of the task
+ *         status:
+ *           type: string
+ *           description: The status of the task
+ *           enum: [todo, doing, done]
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           description: The date the task was added
+ *         updatedAt:
+ *            type: string
+ *            format: date-time
+ *            description: The date the task was last updated
+ *       example:
+ *         _id: 60d0fe4f5311236168a109ca
+ *         title: The New Turing Omnibus
+ *         description: A book about computer science
+ *         status: todo
+ *         createdAt: 2021-06-21T21:00:00.000Z
+ *         updatedAt: 2021-06-21T21:00:00.000Z
+ */
+
+/**
+ * @swagger
+ * tags:
+ *   name: Tasks
+ *   description: The tasks managing API
+ */
+
+/**
+ * @swagger
+ * /tasks:
+ *   post:
+ *     summary: Create a new task
+ *     tags: [Tasks]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Task'
+ *     responses:
+ *       201:
+ *         description: The task was successfully created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Task'
+ *       500:
+ *         description: Some server error
+ */
 router.post("/", validate(createTaskSchema), createTask);
+
+/**
+ * @swagger
+ * /tasks:
+ *   get:
+ *     summary: Returns the list of all the tasks
+ *     tags: [Tasks]
+ *     parameters:
+ *       - in: query
+ *         name: status
+ *         schema:
+ *           type: string
+ *           enum: [todo, doing, done]
+ *         description: The status of the tasks to filter by
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *         description: The page number
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *         description: The number of items to return
+ *       - in: query
+ *         name: sort
+ *         schema:
+ *           type: string
+ *         description: The field to sort by
+ *     responses:
+ *       200:
+ *         description: The list of the tasks
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 page:
+ *                   type: integer
+ *                 limit:
+ *                   type: integer
+ *                 total:
+ *                   type: integer
+ *                 results:
+ *                   type: integer
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Task'
+ */
 router.get("/", getTasks);
+
+/**
+ * @swagger
+ * /tasks/stats:
+ *   get:
+ *     summary: Get task statistics
+ *     tags: [Tasks]
+ *     responses:
+ *       200:
+ *         description: Task statistics
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 todo:
+ *                   type: integer
+ *                 doing:
+ *                   type: integer
+ *                 done:
+ *                   type: integer
+ *       500:
+ *         description: Some server error
+ */
+router.get("/stats", getTaskStats);
+
+/**
+ * @swagger
+ * /tasks/{id}:
+ *   get:
+ *     summary: Get the task by id
+ *     tags: [Tasks]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The task id
+ *     responses:
+ *       200:
+ *         description: The task description by id
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Task'
+ *       404:
+ *         description: The task was not found
+ */
 router.get("/:id", getTaskById);
+
+/**
+ * @swagger
+ * /tasks/{id}:
+ *  patch:
+ *    summary: Update the task by the id
+ *    tags: [Tasks]
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: The task id
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Task'
+ *    responses:
+ *      200:
+ *        description: The task was updated
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/Task'
+ *      404:
+ *        description: The task was not found
+ *      500:
+ *        description: Some error happened
+ */
 router.patch("/:id", validate(updateTaskSchema), updateTask);
+
+/**
+ * @swagger
+ * /tasks/{id}:
+ *   delete:
+ *     summary: Remove the task by id
+ *     tags: [Tasks]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The task id
+ *
+ *     responses:
+ *       200:
+ *         description: The task was deleted
+ *       404:
+ *         description: The task was not found
+ */
 router.delete("/:id", deleteTask);
 
 export default router;
