@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from "express";
-
+import mongoose from "mongoose";
 
 //let tasks: any[] = [];
 import { Task } from "../models/task.model.js";
@@ -58,6 +58,10 @@ export const getTasks = async (req: Request, res: Response) => {
 
 export const getTaskById = async (req: Request, res: Response, next: NextFunction) => {
     try{
+
+        if (!mongoose.Types.ObjectId.isValid(req.params.id as string)) {
+            return res.status(404).json({ message: "Task not found" });
+        }
         const task = await Task.findById(req.params.id);
 
         if(!task){
@@ -74,6 +78,10 @@ export const getTaskById = async (req: Request, res: Response, next: NextFunctio
 
 export const updateTask = async (req: Request, res: Response, next: NextFunction) => {
     try{
+
+        if (!mongoose.Types.ObjectId.isValid(req.params.id as string)) {
+            return res.status(404).json({ message: "Task not found" });
+        }
         const task = await Task.findByIdAndUpdate(
             req.params.id,
             req.body,
@@ -98,6 +106,10 @@ export const updateTask = async (req: Request, res: Response, next: NextFunction
 
 export const deleteTask = async (req: Request, res: Response, next: NextFunction) => {
     try {
+
+        if (!mongoose.Types.ObjectId.isValid(req.params.id as string)) {
+            return res.status(404).json({ message: "Task not found" });
+        }
         const task = await Task.findByIdAndDelete(req.params.id);
 
         if (!task) {
