@@ -1,0 +1,14 @@
+graph TD
+    A[Start API Testing] --> B{Send API Request}
+    B --> C[Receive API Response]
+    C --> D{Perform Assertions}
+    D -->|Test Passed| E[Collect Test Result Pass]
+    D -->|Test Failed| F[Collect Test Result Fail]
+    E --> G{Continue to next test?}
+    F --> G
+    G -->|Yes| B
+    G -->|No| H[All Tests Completed]
+    H --> I[Aggregate Test Results]
+    I --> J[Generate Test Report<br/>e.g., Newman HTML]
+    J --> K[Report Available]
+    K --> L[End]
